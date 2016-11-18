@@ -7,6 +7,7 @@ export default {
   devtool: 'source-map',
   noInfo: false,
   entry: {
+    vendor: path.resolve(__dirname, 'src/vendor'),
     main: path.resolve(__dirname, 'src/index')
   },
   target: 'web',
@@ -16,6 +17,11 @@ export default {
     filename: '[name].[chunkhash].js'
   },
   plugins: [
+    // Create a seperate bundle of vendor libs so they're cached seperately
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor'
+    }),
+    
     // Create HTML file that includes reference to bundled JS.
     new HtmlWebpackPlugin({
       template: 'src/index.html',
